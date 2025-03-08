@@ -3,67 +3,67 @@ const mongoose = require("mongoose");
 
 const userRegistration = new mongoose.Schema({
   //Step -1 User Registration
-  registrationNo: { type: String, required: true },
-  dateofRegistration: { type: String, required: true },
-  firstName: { type: String, required: true },
-  surName: { type: String, required: true },
-  volunteerIntials: { type: String, required: true },
+  registrationNo: { type: String,default : "" },
+  dateofRegistration: { type: String,default : "" },
+  firstName: { type: String,default : "" },
+  surName: { type: String,default : "" },
+  volunteerIntials: { type: String,default : "" },
   gender: {
     type: String,
     enum: ["Male", "Female", "Other"],
-    required: true
+   default : ""
   },
-  fatherorHusbandName: { type: String, required: true },
-  dateofBirth: { type: String, required: true },
-  age: { type: Number, required: true },
-  diet : {type: String, required: true},
-  race : {type: String, required: true},
-  weight : {type: Number, required: true},
-  height : {type: Number, required: true},
-  bmi : {type: Number, required: true},
+  fatherorHusbandName: { type: String,default : "" },
+  dateofBirth: { type: String,default : "" },
+  age: { type: Number,default : "" },
+  diet : {type: String,default : ""},
+  race : {type: String,default : ""},
+  weight : {type: Number,default : ""},
+  height : {type: Number,default : ""},
+  bmi : {type: Number,default : ""},
   identificationMarks : {type: String},
   takePhoto : {type: String},  
   files: [
     {
-      fileSNO : {type: Number, required: true},
-      filename: { type: String, required: true },
-      // filepath: { type: String, required: true },
-      filetype: { type: String, required: true },
-      filesize: { type: String, required: true },
+      fileSNO : {type: Number,default : ""},
+      filename: { type: String,default : "" },
+      // filepath: { type: String,default : "" },
+      filetype: { type: String,default : "" },
+      filesize: { type: String,default : "" },
       uploadedAt: { type : Date, default: Date.now },
     }
   ],
   addfingerprints: {type: String},
 
   //Step - 2 Educational Qualification
-  Nationality: { type: String, required: true },
-  occupation: { type: String, required: true },
-  higestQualification: { type: String, required: true },
-  readingproficiency: { type: String, required: true },
-  writingproficiency: { type: String, required: true },
-  speakingproficiency: { type: String, required: true },
+  Nationality: { type: String,default : "" },
+  occupation: { type: String,default : "" },
+  higestQualification: { type: String,default : "" },
+  readingproficiency: { type: String,default : "" },
+  writingproficiency: { type: String,default : "" },
+  speakingproficiency: { type: String,default : "" },
 
   //Step - 3 Communication Details
-  phoneNumber: { type: Number, required: true },
+  phoneNumber: { type: Number,default : "" },
   alternatePhoneNumber: { type: Number },
-  emailID: { type: String, required: true },
-  addressforCommunication: { type: String, required: true },
+  emailID: { type: String,default : "" },
+  addressforCommunication: { type: String,default : "" },
   comfiles : [
     {
-      comfileName : {type: String, required: true},
-      comfileSize: { type: String, required: true },
-      comUploadedBy: { type: String, required: true },
+      comfileName : {type: String,default : ""},
+      comfileSize: { type: String,default : "" },
+      comUploadedBy: { type: String,default : "" },
       comUploadedAt: {  type : Date, default: Date.now }
     }
   ],
 
   //Step - 4 Emergency Contact Details
-  nameofEmergencyContact: { type: String, required: true },
-  phoneNumberofEmergencyContact: { type: Number, required: true },
-  emailIDofEmergencyContact: { type: String, required: true },
-  relationshipwithEmergencyContact: { type: String, required: true },
-  registeredBy: { type: String, required: true },
-  emergencyadress: { type: String, required: true },
+  nameofEmergencyContact: { type: String,default : "" },
+  phoneNumberofEmergencyContact: { type: Number,default : "" },
+  emailIDofEmergencyContact: { type: String,default : "" },
+  relationshipwithEmergencyContact: { type: String,default : "" },
+  registeredBy: { type: String,default : "" },
+  emergencyaddress: { type: String,default : "" },
 
   registrationStatus: { 
     type: String,

@@ -3,10 +3,10 @@ const User = require("../models/volunteerRegistrationModel");
 
 exports.userRegistrationStep1 = asyncHandler(async (req, res) => {
   try {
-    const { 
-      registrationNo, dateofRegistration, firstName, surName, volunteerIntials, gender, 
-      fatherorHusbandName, dateofBirth, age, diet, race, weight, height, bmi, 
-      identificationMarks, addfingerprints 
+    const {
+      registrationNo, dateofRegistration, firstName, surName, volunteerIntials, gender,
+      fatherorHusbandName, dateofBirth, age, diet, race, weight, height, bmi,
+      identificationMarks, addfingerprints
     } = req.body;
 
     let files = [];
@@ -92,12 +92,19 @@ exports.userRegistrationStep3 = asyncHandler(async (req, res) => {
   try {
     const userId = req.params.id;
 
-    const files = req.files.map((file, index) => ({
-      fileSNO: index + 1,
-      filename: file.originalname,
-      filepath: `/uploads/${file.filename}`,
-      filetype: file.mimetype,
-      filesize: file.size
+    if (!req.files || !req.files.documents) {
+      return res.status(400).json({
+        status: false,
+        message: "No files uploaded",
+      });
+    }
+
+    // Correctly mapping files to match the database schema
+    const comfiles = req.files.documents.map((file, index) => ({
+      comfileName: file.originalname,
+      comfileSize: file.size.toString(),
+      comUploadedBy: userId,
+      comUploadedAt: new Date(),
     }));
 
     const updatedUser = await User.findByIdAndUpdate(
@@ -106,9 +113,9 @@ exports.userRegistrationStep3 = asyncHandler(async (req, res) => {
         phoneNumber: req.body.phoneNumber,
         alternatePhoneNumber: req.body.alternatePhoneNumber,
         emailID: req.body.emailID,
-        addressForCommunication: req.body.addressForCommunication,
+        addressforCommunication: req.body.addressforCommunication,
         registrationStatus: "Step3",
-        documents: files.length > 0 ? files : undefined 
+        $push: { comfiles: { $each: comfiles } }, // Store files in `comfiles` array
       },
       { new: true }
     );
@@ -116,12 +123,12 @@ exports.userRegistrationStep3 = asyncHandler(async (req, res) => {
     res.status(200).json({
       status: true,
       message: "Step 3 Completed",
-      user: updatedUser
+      user: updatedUser,
     });
   } catch (error) {
     res.status(500).json({
       status: false,
-      message: error.message
+      message: error.message,
     });
   }
 });
@@ -138,7 +145,7 @@ exports.userRegistrationStep4 = async (req, res) => {
         emailIDofEmergencyContact: req.body.emailIDofEmergencyContact,
         relationshipwithEmergencyContact: req.body.relationshipwithEmergencyContact,
         registeredBy: req.body.registeredBy,
-        emergencyAddress: req.body.emergencyAddress,
+        emergencyaddress: req.body.emergencyaddress,
         registrationStatus: "Completed"
       },
       { new: true }
@@ -149,4 +156,44 @@ exports.userRegistrationStep4 = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+exports.getregisteredUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json({ user });
+  }
+  catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+exports.getallregisteredUsers = async (req, res) => {
+  try {
+    const users = await User.find();
+    if (!users) {
+      return res.status(404).json({ message: "No users found" });
+    }
+    res.status(200).json({ users });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+exports.deleteregisteredUser = async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const user = User.findByIdAndDelete(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json({ status: true, message: "Registered User Deleted Successfully" });
+  }
+  catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
 

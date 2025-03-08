@@ -66,7 +66,7 @@ const router = express.Router();
  *       400:
  *         description: Bad request
  */
-router.post("/userRegistrationStep1", upload.array("files", 5), registrationController.userRegistrationStep1);
+router.post("/userRegistrationStep1", upload, registrationController.userRegistrationStep1);
 
 /**
  * @swagger
@@ -140,7 +140,7 @@ router.put("/userRegistrationStep2/:id", registrationController.userRegistration
  *       404:
  *         description: User not found
  */
-router.put("/userRegistrationStep3/:id", upload.array("documents", 5), registrationController.userRegistrationStep3);
+router.put("/userRegistrationStep3/:id", upload, registrationController.userRegistrationStep3);
 
 /**
  * @swagger
@@ -180,5 +180,11 @@ router.put("/userRegistrationStep3/:id", upload.array("documents", 5), registrat
  *         description: User not found
  */
 router.put("/userRegistrationStep4/:id", registrationController.userRegistrationStep4);
+
+router.get("/getallregisteredUsers", registrationController.getallregisteredUsers);
+
+router.get("/getregisteredUser/:id", registrationController.getregisteredUser);
+
+router.delete("/registrationDelete/:id", registrationController.deleteregisteredUser);
 
 module.exports = router;
