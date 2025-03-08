@@ -1,17 +1,15 @@
-const jwt = require("jsonwebtoken");
+const multer = require("multer");
+const path = require("path");
 
-const protect = (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1];
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
 
-  if (!token) return res.status(401).json({ message: "Not authorized" });
+const upload = multer({ storage });
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
-    next();
-  } catch (error) {
-    res.status(401).json({ message: "Invalid token" });
-  }
-};
-
-module.exports = { protect };
+module.exports = upload;
