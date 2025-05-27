@@ -31,7 +31,7 @@ exports.userRegistrationStep1 = asyncHandler(async (req, res) => {
 
     res.status(201).json({
       status: true,
-      message: "Step 1 Completed",
+      message: "Registration Step 1 Completed",
       user: newUser,
     });
 
@@ -77,7 +77,7 @@ exports.userRegistrationStep2 = asyncHandler(async (req, res) => {
 
     res.status(200).json({
       status: true,
-      message: "Step 2 Completed",
+      message: "Registration Step 2 Completed",
       user: updatedUser,
     });
   } catch (error) {
@@ -122,7 +122,7 @@ exports.userRegistrationStep3 = asyncHandler(async (req, res) => {
 
     res.status(200).json({
       status: true,
-      message: "Step 3 Completed",
+      message: "Registration Step 3 Completed",
       user: updatedUser,
     });
   } catch (error) {
